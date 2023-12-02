@@ -5,7 +5,13 @@ description = ""
 authors = [
     {name = "c4chula", email = "henry.foster71@yahoo.com"},
 ]
-dependencies = []
+dependencies = [
+    "sqlalchemy>=2.0.23",
+    "pyrogram>=2.0.106",
+    "loguru>=0.7.2",
+    "aiosqlite>=0.19.0",
+    "alembic>=1.13.0",
+]
 requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
