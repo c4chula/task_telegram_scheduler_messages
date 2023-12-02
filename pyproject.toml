@@ -1,7 +1,7 @@
 [project]
-name = ""
-version = ""
-description = ""
+name = "tg_assistant"
+version = "0.0.1"
+description = "Telegram Assistant which sends messages to client"
 authors = [
     {name = "c4chula", email = "henry.foster71@yahoo.com"},
 ]
