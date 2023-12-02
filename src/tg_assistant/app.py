@@ -1,6 +1,8 @@
-from pyrogram.client import Client
-from tg_assistant.config import cfg
 import asyncio
+
+from pyrogram.client import Client
+
+from tg_assistant.config import cfg
 
 
 async def main() -> None:
