@@ -100,4 +100,3 @@ extend-exclude = ["migrations"]
     "B018",     # ignore useless expressions in tests
     "PT012",    # ignore complex with pytest.raises clauses
 ]
-
