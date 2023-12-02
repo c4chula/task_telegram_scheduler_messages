@@ -23,3 +23,6 @@ dev = [
     "pytest>=7.4.3",
     "black>=23.11.0",
 ]
+
+[tool.pdm.scripts]
+start = "python src/tg_assistant/app.py"
