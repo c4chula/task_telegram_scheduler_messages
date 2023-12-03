@@ -26,13 +26,17 @@ class UserRepo(AsyncSessionFactory):
             stmt = stmt.filter(or_(*filter_set))
 
         session = await super().get_session()
-        return (await session.execute(stmt)).scalars().fetchall()
+        data = (await session.execute(stmt)).scalars().fetchall()
+        await session.close()
+        return data
 
     async def get_user(self, id: int) -> User | None:
         stmt = select(User).where(User.id == id)
 
         session = await super().get_session()
-        return (await session.execute(stmt)).scalar_one_or_none()
+        data = (await session.execute(stmt)).scalar_one_or_none()
+        await session.close()
+        return data
 
     async def create_user(self, data: UserCreate) -> User | None:
         stmt = (
@@ -44,6 +48,7 @@ class UserRepo(AsyncSessionFactory):
         session = await super().get_session()
         user = (await session.execute(stmt)).scalar_one_or_none()
         await session.commit()
+        await session.close()
         return user
 
     async def delete_user(self, id: int) -> None:
@@ -52,3 +57,4 @@ class UserRepo(AsyncSessionFactory):
         session = await super().get_session()
         await session.execute(stmt)
         await session.commit()
+        await session.close()

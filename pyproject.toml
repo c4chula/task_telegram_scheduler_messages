@@ -102,3 +102,6 @@ extend-exclude = ["migrations"]
     "B018",     # ignore useless expressions in tests
     "PT012",    # ignore complex with pytest.raises clauses
 ]
+"**/__init__.py" = [
+    "F401",     # ignore unused import     
+]
