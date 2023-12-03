@@ -13,7 +13,3 @@ async def get_newbies_for_today(_: Client, msg: Message) -> None:
     ]
     text = "\n".join(users) + f"\nTotal For Today {len(users)}"
     await msg.reply(text)
-
-
-async def echo(_: Client, msg: Message) -> None:
-    await msg.reply(msg.text)
