@@ -1,17 +1,10 @@
-import asyncio
+import uvloop
 
-from pyrogram.client import Client
+from tg_assistant.client import client
+from tg_assistant.logger import logger
 
-from tg_assistant.config import cfg
-
-
-async def main() -> None:
-    app = Client(
-        "my_account",
-        api_id=cfg.api_id,
-        api_hash=cfg.api_hash,
-    )
-
+uvloop.install()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    logger.info("telegram client start working!)")
+    client.run()

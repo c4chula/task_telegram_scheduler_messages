@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String
 from sqlalchemy.dialects.sqlite import TIMESTAMP
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.tg_assistant.database import Base
+from ..database import Base
 
 
 class User(Base):
