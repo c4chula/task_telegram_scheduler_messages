@@ -2,6 +2,7 @@ from collections.abc import Sequence
 from typing import Any
 
 from sqlalchemy import delete, insert, or_, select
+from sqlalchemy.sql.functions import user
 
 from tg_assistant.database import AsyncSessionFactory
 
@@ -13,7 +14,7 @@ class UserRepo(AsyncSessionFactory):
     def __init__(self, *args: Any, **kwargs: dict[str, Any]):
         super().__init__(*args, **kwargs)
 
-    async def get_users(self, **filters: dict[str, Any]) -> Sequence[User]:
+    async def get_users(self, *_: Any, **filters: dict[str, Any]) -> Sequence[User]:
         stmt = select(User)
 
         filter_set = [
@@ -32,6 +33,14 @@ class UserRepo(AsyncSessionFactory):
 
     async def get_user(self, id: int) -> User | None:
         stmt = select(User).where(User.id == id)
+
+        session = await super().get_session()
+        data = (await session.execute(stmt)).scalar_one_or_none()
+        await session.close()
+        return data
+
+    async def get_user_by_telegram_id(self, user_telegram_id: str) -> User | None:
+        stmt = select(User).where(User.user_telegram_id == user_telegram_id)
 
         session = await super().get_session()
         data = (await session.execute(stmt)).scalar_one_or_none()
