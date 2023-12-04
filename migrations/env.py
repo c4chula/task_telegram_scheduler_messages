@@ -15,7 +15,7 @@ from src.tg_assistant.config import cfg
 config = context.config
 
 section = config.config_ini_section
-config.set_section_option(section, "SQLITE_URL", cfg.sqlite_url)
+config.set_section_option(section, "DB_URL", cfg.get_db_url())
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
