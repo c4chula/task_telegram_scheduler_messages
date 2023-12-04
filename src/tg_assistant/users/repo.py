@@ -53,7 +53,7 @@ class UserRepo(AsyncSessionFactory):
             .values(user_telelegram_id=data.user_telegram_id)
             .returning(User)
         )
-            
+
         session = await super().get_session()
         try:
             user = (await session.execute(stmt)).scalar_one_or_none()
