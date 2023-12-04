@@ -1,8 +1,8 @@
 from collections.abc import Sequence
 from typing import Any
+from loguru import logger
 
 from sqlalchemy import delete, insert, or_, select
-from sqlalchemy.sql.functions import user
 
 from tg_assistant.database import AsyncSessionFactory
 
@@ -53,12 +53,16 @@ class UserRepo(AsyncSessionFactory):
             .values(user_telelegram_id=data.user_telegram_id)
             .returning(User)
         )
-
+            
         session = await super().get_session()
-        user = (await session.execute(stmt)).scalar_one_or_none()
-        await session.commit()
-        await session.close()
-        return user
+        try:
+            user = (await session.execute(stmt)).scalar_one_or_none()
+            await session.commit()
+            return user
+        except Exception as e:
+            logger.exception(e)
+        finally:
+            await session.close()
 
     async def delete_user(self, id: int) -> None:
         stmt = delete(User).where(User.id == id)
