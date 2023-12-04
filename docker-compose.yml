@@ -1,0 +1,24 @@
+services:
+  assistant_db:
+    container_name: assistant_db
+    image: postgres:15-alpine
+    restart: on-failure
+    ports: 
+      - "${DB_PORT}:5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - assistant_db
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+
+volumes:
+  db_volume: {}
+
+networks:
+  assistant_db:
+    name: assistant_db 

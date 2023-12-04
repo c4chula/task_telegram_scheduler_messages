@@ -3,7 +3,7 @@ from sqlalchemy.orm import DeclarativeBase
 
 from tg_assistant.config import cfg
 
-engine = create_async_engine(cfg.sqlite_url)
+engine = create_async_engine(cfg.get_db_url())
 sessionmaker = async_sessionmaker(
     bind=engine,
     autoflush=False,

@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 from typing import Any
+from loguru import logger
 
 from sqlalchemy import delete, insert, or_, select
 
@@ -13,7 +14,7 @@ class UserRepo(AsyncSessionFactory):
     def __init__(self, *args: Any, **kwargs: dict[str, Any]):
         super().__init__(*args, **kwargs)
 
-    async def get_users(self, **filters: dict[str, Any]) -> Sequence[User]:
+    async def get_users(self, *_: Any, **filters: dict[str, Any]) -> Sequence[User]:
         stmt = select(User)
 
         filter_set = [
@@ -38,6 +39,14 @@ class UserRepo(AsyncSessionFactory):
         await session.close()
         return data
 
+    async def get_user_by_telegram_id(self, user_telegram_id: str) -> User | None:
+        stmt = select(User).where(User.user_telegram_id == user_telegram_id)
+
+        session = await super().get_session()
+        data = (await session.execute(stmt)).scalar_one_or_none()
+        await session.close()
+        return data
+
     async def create_user(self, data: UserCreate) -> User | None:
         stmt = (
             insert(User)
@@ -46,10 +55,14 @@ class UserRepo(AsyncSessionFactory):
         )
 
         session = await super().get_session()
-        user = (await session.execute(stmt)).scalar_one_or_none()
-        await session.commit()
-        await session.close()
-        return user
+        try:
+            user = (await session.execute(stmt)).scalar_one_or_none()
+            await session.commit()
+            return user
+        except Exception as e:
+            logger.exception(e)
+        finally:
+            await session.close()
 
     async def delete_user(self, id: int) -> None:
         stmt = delete(User).where(User.id == id)
